@@ -8,12 +8,14 @@ from llama_index.vector_stores.postgres import PGVectorStore
 
 load_dotenv()
 
+# Setting the Chunk Size
 Settings.chunk_size = 512
 
 _vector_store = None
 _index = None
 
 
+# Creating the vector Store => PGVectorStore
 def _create_vector_store() -> PGVectorStore:
     
     return PGVectorStore.from_params(
@@ -28,6 +30,7 @@ def _create_vector_store() -> PGVectorStore:
     )
 
 
+# Creating the Index Retriever
 def get_index() -> VectorStoreIndex:
     """
     Used by DBOS workers and API
@@ -51,7 +54,7 @@ def get_index() -> VectorStoreIndex:
 
     return _index
 
-
+# Creating the Chat engine
 def get_chat_engine() -> BaseChatEngine:
     """
     API-only helper

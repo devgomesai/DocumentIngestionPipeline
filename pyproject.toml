@@ -1,0 +1,35 @@
+[project]
+name = "dbos-tests"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dbos>=2.7.0",
+    "fastapi[standard]>=0.128.0",
+    "ipykernel>=7.1.0",
+    "llama-index>=0.14.12",
+    "llama-index-readers-docling>=0.4.2",
+    "llama-index-vector-stores-postgres>=0.7.2",
+    "openai-whisper>=20250625",
+    "psycopg2>=2.9.11",
+    "pydantic-ai-slim[groq]>=1.40.0",
+    "pydantic-ai[dbos]>=1.40.0",
+    "python-dotenv>=1.2.1",
+    "sqlalchemy>=2.0.45",
+    "url-parser>=3.0.3",
+]
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+filter_files = true
+atomic = true
+
+[dependency-groups]
+dev = [
+    "black>=25.9.0",
+    "isort>=7.0.0",
+]

@@ -6,10 +6,6 @@ from llama_index.readers.docling import DoclingReader
 
 from .index import get_index
 
-
-
-
-
 # Creating the steps
 @DBOS.step()
 def parse_uploaded_file(file_path: str):

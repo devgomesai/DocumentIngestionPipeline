@@ -2,17 +2,19 @@ import os
 from dotenv import load_dotenv
 
 from llama_index.core import Settings, StorageContext, VectorStoreIndex
-from llama_index.core.chat_engine.types import BaseChatEngine
+from llama_index.core.chat_engine.types import BaseChatEngine 
 from llama_index.vector_stores.postgres import PGVectorStore
 from llama_index.embeddings.openai import OpenAIEmbedding
 
 load_dotenv()
+
 
 # Setting the Chunk Size and the Embedding Model and the Chunk Overlap
 Settings.chunk_size = 512
 Settings.chunk_overlap = 50
 Settings.embed_model = OpenAIEmbedding()
 
+# Set the vector_store and the index
 _vector_store = None
 _index = None
 
@@ -29,16 +31,14 @@ def _create_vector_store() -> PGVectorStore:
         perform_setup=True,
     )
 
-
 # Creating the Index Retriever
 def get_index() -> VectorStoreIndex:
     """
-    Used by DBOS workers and API
-    Lazy + singleton per process
+    Lazy singleton per process
     """
     global _vector_store, _index
 
-    if _index is None or _vector_store is None:
+    if _index is None:
         _vector_store = _create_vector_store()
 
         storage_context = StorageContext.from_defaults(
@@ -46,7 +46,7 @@ def get_index() -> VectorStoreIndex:
         )
 
         _index = VectorStoreIndex(
-            nodes=[],  # existing pgvector-backed index
+            nodes=[],
             storage_context=storage_context,
         )
 
@@ -54,12 +54,9 @@ def get_index() -> VectorStoreIndex:
 
     return _index
 
-
 # Creating the Chat engine
 def get_chat_engine() -> BaseChatEngine:
-    """
-    API-only helper
-    """
+    # Get the index
     index = get_index()
     return index.as_chat_engine(
         chat_mode="context",

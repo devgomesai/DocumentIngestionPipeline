@@ -5,29 +5,24 @@ from llama_index.readers.docling import DoclingReader
 
 from .index import get_index
 
-# Creating the steps
+
+# Ingestor Module for document reading (.jpeg, .pptx, .pdf, .mp3 ......) supported types
+docling_reader = DoclingReader()
+
+
+# Step for parsing the document into the ingestor (Docling)
 @DBOS.step()
 def parse_uploaded_file(file_path: str):
-    # Initializing the Ingestor ( Docling ) 
-    docling_reader = DoclingReader()
-    # See which worker is working on which file
+    # Logging the worker process id and the file it is working with
     print(f"[WORKER {os.getpid()}] Parsing {file_path}")
-    # return the list of docs with data and uuid from the loaded file
+    # return the resposne from the ingestor
     return docling_reader.load_data(file_path=file_path)
 
-
+# Set for creating indexing and embedding and then storing ito the PGVector
 @DBOS.step()
 def index_and_store_docs(page: Document):
-    # Get the index and insert it into PgVector
-    # print(page)
-    """
-    Doc ID: e3e5393d-73eb-4b6e-81bf-73a126d7f92e
-Text: ## Infosys Ltd  infosys.com  1,613  -1.57%  08Jan-closeprice
-BSE:500209  NSE:INFY  | Market Cap                     | 6,54,179Cr.
-| Current Price                  | 1,613                          |
-High / Low                     | 1,983 /1,307                   |
-|--------------------------------|-----------------------------...
-    """
+    # Get the index  
     index = get_index()
+    # store into the vectorDB
     index.insert(page)
-    print("=== Inserted document into pgvector index ===")
+    print(f"[INDEXED] doc_id={page.doc_id}")

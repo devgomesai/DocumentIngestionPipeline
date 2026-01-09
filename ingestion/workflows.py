@@ -2,7 +2,7 @@
 from typing import List
 from dbos import DBOS, Queue
 
-from .steps import parse_uploaded_file, index_documents
+from .steps import parse_uploaded_file, index_and_store_docs
 
 
 # The Queue that each worker is going to work on
@@ -31,7 +31,7 @@ def index_uploaded_files(file_paths: List[str]):
         documents = parse_uploaded_file(file_path)
         for doc in documents:
             # index those doc from documents
-            index_documents(doc)
+            index_and_store_docs(doc)
         total_docs += len(documents)
 
         # Update the Progress

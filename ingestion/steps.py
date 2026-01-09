@@ -18,7 +18,7 @@ def parse_uploaded_file(file_path: str):
 
 
 @DBOS.step()
-def index_documents(page: Document):
+def index_and_store_docs(page: Document):
     # Get the index and insert it into PgVector
     # print(page)
     """

@@ -11,9 +11,7 @@ load_dotenv()
 # Setting the Chunk Size and the Embedding Model and the Chunk Overlap
 Settings.chunk_size = 512
 Settings.chunk_overlap = 50
-Settings.embed_model = OpenAIEmbedding(
-    model="text-embedding-3-small"
-)
+Settings.embed_model = OpenAIEmbedding()
 
 _vector_store = None
 _index = None

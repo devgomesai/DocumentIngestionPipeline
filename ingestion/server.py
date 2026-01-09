@@ -1,8 +1,8 @@
 
 import os
-import shutil
 from pathlib import Path
 from typing import List
+import uuid
 
 from fastapi import FastAPI, UploadFile, File
 from pydantic import BaseModel
@@ -28,8 +28,17 @@ client = DBOSClient(
 UPLOAD_DIR = Path("data")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
+INDEXING_QUEUE = "indexing-queue"
+INDEX_WORKFLOW = "index_uploaded_files"
+
 # Get the chat engine to test the 
-chat_engine = get_chat_engine()
+_chat_engine = None
+
+def engine():
+    global _chat_engine
+    if _chat_engine is None:
+        _chat_engine = get_chat_engine()
+    return _chat_engine
 
 
 # Define the Chat Schema
@@ -43,25 +52,28 @@ async def file_upload(files: List[UploadFile] = File(...)):
     file_paths = []
 
     for file in files:
-        path = UPLOAD_DIR / Path(file.filename).name
-        with path.open("wb") as f:
-            shutil.copyfileobj(file.file, f)
+        filename = f"{uuid.uuid4()}_{file.filename}"
+        path = UPLOAD_DIR / filename
+        path.write_bytes(await file.read())
         file_paths.append(str(path))
 
-    # Create a queue and workflow Options
     options: EnqueueOptions = {
-        "queue_name": "indexing-queue",
-        "workflow_name": "index_uploaded_files",
+        "queue_name": INDEXING_QUEUE,
+        "workflow_name": INDEX_WORKFLOW,
     }
-    # Enqueing the file paths and the Options
-    client.enqueue(options, file_paths)
-    
-    
-    return {"status": "indexing_started", "files": file_paths}
+
+    handle = client.enqueue(options, file_paths)
+
+    return {
+        "status": "indexing_started",
+        "workflow_id": handle.workflow_id,
+        "files": file_paths,
+    }
+
 
 
 @app.post("/chat")
 def chat(chat: ChatSchema):
-    # Testing to make sure the files got ingested and responded based on the user query
-    return {"response": str(chat_engine.chat(chat.message))}
+    response = engine().chat(chat.message)
+    return {"response": str(response)}
 

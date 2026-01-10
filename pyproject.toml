@@ -18,8 +18,11 @@ dependencies = [
     "onnxruntime>=1.23.2",
     "openai-whisper>=20250625",
     "psycopg2>=2.9.11",
+    "pytest>=9.0.2",
     "python-dotenv>=1.2.1",
     "sqlalchemy>=2.0.45",
+    "torch>=2.9.1",
+    "transformers>=4.57.3",
     "url-parser>=3.0.3",
 ]
 

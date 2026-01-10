@@ -5,8 +5,10 @@ description = "Scalable document ingestion pipeline using FastAPI, DBOS, and Lla
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "chandra-ocr>=0.1.8",
     "dbos>=2.7.0",
     "fastapi[standard]>=0.128.0",
+    "hf-xet>=1.2.0",
     "ipykernel>=7.1.0",
     "llama-index>=0.14.12",
     "llama-index-embeddings-openai>=0.5.1",

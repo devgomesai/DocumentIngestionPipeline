@@ -51,7 +51,7 @@ def index_uploaded_files(file_paths: List[str]):
 # Handles the indexing of each file
 @DBOS.workflow()
 def index_single_file(file_path: str) -> int:
-    # Get the docs from ingetor(docling)
+    # Get the docs from ingestor(docling)
     documents = parse_uploaded_file(file_path)
     # Then for each doc in it index and store into the VectorDB
     for doc in documents:

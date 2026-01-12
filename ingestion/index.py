@@ -12,7 +12,7 @@ from llama_index.embeddings.ollama import OllamaEmbedding
 load_dotenv()
 
 
-# Setting the Chunk Size and the Embedding Model and the Chunk Overlap
+# Setting the Chunk Size ,Chunk Overlap, Embedding Model and the LLM model
 Settings.chunk_size = 512
 Settings.chunk_overlap = 50
 Settings.embed_model =  OllamaEmbedding(

@@ -3,9 +3,9 @@ from dotenv import load_dotenv
 from llama_index.llms.google_genai import GoogleGenAI
 from llama_index.core import Settings, StorageContext, VectorStoreIndex
 from llama_index.core.chat_engine.types import BaseChatEngine 
-# from llama_index.vector_stores.postgres import PGVectorStore
+from llama_index.vector_stores.postgres import PGVectorStore
 # import asyncio
-from llama_index.vector_stores.milvus import MilvusVectorStore
+# from llama_index.vector_stores.milvus import MilvusVectorStore
 from llama_index.embeddings.ollama import OllamaEmbedding
 # from llama_index.vector_stores.milvus.base import BM25BuiltInFunction
 
@@ -29,27 +29,27 @@ _index = None
 
 # Creating the vector Store => PGVectorStore
 
-# def _create_vector_store() -> PGVectorStore:
-#     return PGVectorStore.from_params(
-#         database=os.getenv("PGDATABASE"),
-#         host=os.getenv("PGHOST"),
-#         port=5432,
-#         user=os.getenv("PGUSER"),
-#         password=os.getenv("PGPASSWORD"),
-#         table_name="llamaindex_vectors",
-#         embed_dim=1536,
-#         perform_setup=True,
-#     )
-
-def _create_vector_store() -> MilvusVectorStore:
-    return MilvusVectorStore(
-        uri=os.getenv("MILVUS_ENDPOINT"),
-        token=os.getenv("MILVUS_TOKEN"),
-        collection_name=os.getenv("MILVUS_COLLECTION"),
-        dim=768,
-        overwrite=True,
-        enable_async=False,
+def _create_vector_store() -> PGVectorStore:
+    return PGVectorStore.from_params(
+        database=os.getenv("PGDATABASE"),
+        host=os.getenv("PGHOST"),
+        port=5432,
+        user=os.getenv("PGUSER"),
+        password=os.getenv("PGPASSWORD"),
+        table_name="llamaindex_vectors",
+        embed_dim=1536,
+        perform_setup=True,
     )
+
+# def _create_vector_store() -> MilvusVectorStore:
+#     return MilvusVectorStore(
+#         uri=os.getenv("MILVUS_ENDPOINT"),
+#         token=os.getenv("MILVUS_TOKEN"),
+#         collection_name=os.getenv("MILVUS_COLLECTION"),
+#         dim=768,
+#         overwrite=True,
+#         enable_async=False,
+#     )
 
 
 # Creating the Index Retriever

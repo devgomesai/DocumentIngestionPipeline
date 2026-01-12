@@ -37,7 +37,7 @@ def _create_vector_store() -> PGVectorStore:
         user=os.getenv("PGUSER"),
         password=os.getenv("PGPASSWORD"),
         table_name="llamaindex_vectors",
-        embed_dim=1536,
+        embed_dim=768,
         perform_setup=True,
     )
 

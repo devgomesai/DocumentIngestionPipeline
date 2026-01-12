@@ -13,7 +13,7 @@ from .index import get_chat_engine
 load_dotenv(".env")
 
 app = FastAPI(
-    title=" == Document Ingestion Pipeline (Client) ==",
+    title=" 📚 Document Ingestion Pipeline 📃",
     description="API for uploading documents and enqueueing ingestion jobs",
 )
 # Initializing the DBOS Client
